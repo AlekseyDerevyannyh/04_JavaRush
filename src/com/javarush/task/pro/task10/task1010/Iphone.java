@@ -18,26 +18,18 @@ public class Iphone {
     }
 
     //напишите тут ваш код
-    public boolean equals(Object obj) {
-        if (this == obj)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Iphone))
-            return false;
-        Iphone iphone = (Iphone) obj;
-        if (this.price != iphone.price)
-            return false;
-        if (this.model == null && this.color == null) {
-            return iphone.model == null && iphone.color == null;
         }
-        if (this.model == null) {
-            return iphone.model == null && this.color.equals(iphone.color);
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
-        if (this.color == null) {
-            return iphone.color == null && this.model.equals(iphone.model);
-        }
-        return this.model.equals(iphone.model) && this.color.equals(iphone.color);
+        Iphone iphone = (Iphone) o;
+        return price == iphone.price &&
+                Objects.equals(model, iphone.model) &&
+                Objects.equals(color, iphone.color);
     }
 
     public static void main(String[] args) {
