@@ -18,7 +18,7 @@ public class Car {
     //напишите тут ваш код
     @Override
     public int hashCode() {
-        return model.hashCode() + year;
+        return Objects.hash(model, year);
     }
 
     public static void main(String[] args) {
