@@ -18,7 +18,27 @@ public class Iphone {
     }
 
     //напишите тут ваш код
-    public void
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Iphone))
+            return false;
+        Iphone iphone = (Iphone) obj;
+        if (this.price != iphone.price)
+            return false;
+        if (this.model == null && this.color == null) {
+            return iphone.model == null && iphone.color == null;
+        }
+        if (this.model == null) {
+            return iphone.model == null && this.color.equals(iphone.color);
+        }
+        if (this.color == null) {
+            return iphone.color == null && this.model.equals(iphone.model);
+        }
+        return this.model.equals(iphone.model) && this.color.equals(iphone.color);
+    }
 
     public static void main(String[] args) {
         Iphone iphone1 = new Iphone("X", "Black", 999);
