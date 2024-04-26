@@ -26,15 +26,9 @@ public class Solution {
 
     public static void paySalary(String name) {
         //напишите тут ваш код
-        if (name == null) {
-            return;
-        }
-
-        for (int i = 0; i < waitingEmployees.size(); i++) {
-            if (name.equals(waitingEmployees.get(i))) {
-                alreadyGotSalaryEmployees.add(name);
-                waitingEmployees.set(i, null);
-            }
+        if (waitingEmployees.contains(name)) {
+            alreadyGotSalaryEmployees.add(name);
+            waitingEmployees.set(waitingEmployees.indexOf(name), null);
         }
     }
 }
