@@ -45,15 +45,45 @@ public class Solution {
         int age = Integer.parseInt(scanner.nextLine());
 
         //напишите тут ваш код
-        user.setName(name);
+        switch (user.setName(name)) {
+            case 0:
+                break;
+            case -1:
+                System.out.println(CANNOT_BE_NULL);
+                break;
+            case -2:
+                System.out.println(CANNOT_BE_EMPTY);
+                break;
+            case -3:
+                System.out.println(CANNOT_CONTAIN_DIGIT);
+                break;
+            default:
+                System.out.println(UNKNOWN_ERROR);
+        }
 
-        user.setAge(age);
+        switch (user.setAge(age)) {
+            case 0:
+                break;
+            case -1:
+                System.out.println(CANNOT_BE_NEGATIVE);
+                break;
+            case -2:
+                System.out.println(CANNOT_BE_TOO_BIG);
+                break;
+            default:
+                System.out.println(UNKNOWN_ERROR);
+        }
 
         users.add(user);
     }
 
     static void findUserIndex(User user) {
         //напишите тут ваш код
-        System.out.printf(FOUND, user.getName(), users.indexOf(user));
+        int userIndex = users.indexOf(user);
+        if (userIndex == -1) {
+            System.out.printf(NOT_FOUND, user.getName());
+            return;
+        }
+        System.out.printf(FOUND, user.getName(), userIndex);
     }
 }
