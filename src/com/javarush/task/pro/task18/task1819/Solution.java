@@ -21,6 +21,6 @@ public class Solution {
     public static void printList(List<String> list) {
         String text = "Этот элемент равен null";
         //напишите тут ваш код
-        list.stream().map(Optional::ofNullable).forEach(x -> System.out.println(x.orElse(text)));
+        list.forEach(s -> System.out.println(Optional.ofNullable(s).orElse(text)));
     }
 }
