@@ -20,15 +20,13 @@ public class Solution {
         }
 
         //напишите тут ваш код
-        int min = array[0];
         int minIndex = 0;
         for (int i = 1; i < array.length; i++) {
-            if (array[i] < min) {
-                min = array[i];
+            if (array[i] < array[minIndex]) {
                 minIndex = i;
             }
         }
-        return new Pair<Integer, Integer>(min, minIndex);
+        return new Pair<Integer, Integer>(array[minIndex], minIndex);
     }
 
     public static class Pair<X, Y> {
