@@ -14,9 +14,6 @@ public class AmigoOutputStream extends FileOutputStream {
 
     public static void main(String[] args) throws IOException {
         new AmigoOutputStream(new FileOutputStream(fileName));
-//        AmigoOutputStream aos = new AmigoOutputStream(new FileOutputStream(fileName));
-//        aos.write("hello\n".getBytes());
-//        aos.close();
     }
 
     public AmigoOutputStream(FileOutputStream fos) throws IOException {
