@@ -14,15 +14,11 @@ public class Solution {
                 fileNames[i] = reader.readLine();
             }
             try (FileOutputStream fos1 = new FileOutputStream(fileNames[0]);
-                FileInputStream fis2 = new FileInputStream(fileNames[1])) {
+                 FileInputStream fis2 = new FileInputStream(fileNames[1]);
+                 FileInputStream fis3 = new FileInputStream(fileNames[2])) {
                 while (fis2.available() > 0) {
                     fos1.write(fis2.read());
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try (FileOutputStream fos1 = new FileOutputStream(fileNames[0], true);
-                 FileInputStream fis3 = new FileInputStream(fileNames[2])) {
                 while (fis3.available() > 0) {
                     fos1.write(fis3.read());
                 }
