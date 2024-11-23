@@ -26,24 +26,20 @@ public class Solution {
         int a = Integer.parseInt(elements[0]);
         int b = Integer.parseInt(elements[2]);
         int result;
-        char operation;
         switch (elements[1]) {
             case "+":
                 result = a + b;
-                operation = '+';
                 break;
             case "-":
                 result = a - b;
-                operation = '-';
                 break;
             case "*":
                 result = a * b;
-                operation = '*';
                 break;
             default:
                 return;
         }
-        System.out.printf("%d %s %d = %d\n", a, operation, b, result);
+        System.out.printf("%d %s %d = %d\n", a, elements[1], b, result);
     }
 
     public static class TestString {
@@ -52,4 +48,3 @@ public class Solution {
         }
     }
 }
-
