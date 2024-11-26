@@ -17,16 +17,26 @@ public class Solution {
 
     static String getDayOfWeek(Calendar calendar) {
         //напишите тут ваш код
+        String day;
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+            case 1:
+                day = "воскресенье";
+            case 2:
+                day = "понедельник";
+            case 3:
+                day = "вторник";
+            case 4:
+                day = "среда";
+            case 5:
+                day = "четверг";
+            case 6:
+                day = "пятница";
+            case 7:
+                day = "суббота";
+            default:
+                day = "ошибка!";
+        }
 
-        return switch (calendar.get(Calendar.DAY_OF_WEEK)) {
-            case 1 -> "воскресенье";
-            case 2 -> "понедельник";
-            case 3 -> "вторник";
-            case 4 -> "среда";
-            case 5 -> "четверг";
-            case 6 -> "пятница";
-            case 7 -> "суббота";
-            default -> "ошибка!";
-        };
+        return day;
     }
 }

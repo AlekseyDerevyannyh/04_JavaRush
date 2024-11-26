@@ -17,15 +17,25 @@ public class Solution {
 
     static String getDayOfWeek(Date date) {
         //напишите тут ваш код
-        return switch (date.getDay()) {
-            case 0 -> "воскресенье";
-            case 1 -> "понедельник";
-            case 2 -> "вторник";
-            case 3 -> "среда";
-            case 4 -> "четверг";
-            case 5 -> "пятница";
-            case 6 -> "суббота";
-            default -> "ошибка!";
-        };
+        String day;
+        switch (date.getDay()) {
+            case 0:
+                day = "воскресенье";
+            case 1:
+                day = "понедельник";
+            case 2:
+                day = "вторник";
+            case 3:
+                day = "среда";
+            case 4:
+                day = "четверг";
+            case 5:
+                day = "пятница";
+            case 6:
+                day = "суббота";
+            default:
+                day = "ошибка!";
+        }
+        return day;
     }
 }
