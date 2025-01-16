@@ -36,13 +36,11 @@ public class Solution implements Serializable {
         private void writeObject(ObjectOutputStream out) throws IOException {
             out.defaultWriteObject();
             out.writeObject(this.nameA);
-            out.writeObject(this.nameB);
         }
 
         private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
             this.nameA = (String) in.readObject();
-            this.nameB = (String) in.readObject();
         }
     }
 
