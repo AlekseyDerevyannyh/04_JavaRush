@@ -38,6 +38,21 @@ public class Hippodrome {
         }
     }
 
+    public Horse getWinner() {
+        if (horses == null || horses.isEmpty())
+            return null;
+        Horse winner = horses.get(0);
+        for (Horse horse : horses) {
+            if (horse.getDistance() > winner.getDistance())
+                winner = horse;
+        }
+        return winner;
+    }
+
+    public void printWinner() {
+        System.out.printf("Winner is %s!", getWinner().getName());
+    }
+
     public static void main(String[] args) {
         List<Horse> horses = new ArrayList<>();
         Horse horse1 = new Horse("horse1", 3.0, 0.0);
