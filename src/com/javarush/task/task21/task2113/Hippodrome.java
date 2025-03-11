@@ -27,7 +27,9 @@ public class Hippodrome {
         }
     }
 
-    public void move() {}
+    public void move() {
+        horses.forEach(Horse::move);
+    }
 
     public void print() {}
 
