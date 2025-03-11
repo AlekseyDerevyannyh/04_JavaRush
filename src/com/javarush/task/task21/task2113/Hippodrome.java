@@ -31,7 +31,12 @@ public class Hippodrome {
         horses.forEach(Horse::move);
     }
 
-    public void print() {}
+    public void print() {
+        horses.forEach(Horse::print);
+        for (int i = 0; i < 10; i++) {
+            System.out.println();
+        }
+    }
 
     public static void main(String[] args) {
         List<Horse> horses = new ArrayList<>();
