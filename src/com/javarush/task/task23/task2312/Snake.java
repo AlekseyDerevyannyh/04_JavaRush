@@ -15,6 +15,14 @@ public class Snake {
     }
 
     public void move() {
+        if (!isAlive)                                       return;
+        if (direction.equals(SnakeDirection.UP))            move(0, -1);
+        else if (direction.equals(SnakeDirection.RIGHT))    move(1, 0);
+        else if (direction.equals(SnakeDirection.DOWN))     move(0, 1);
+        else if (direction.equals(SnakeDirection.LEFT))     move(-1, 0);
+    }
+
+    public void move(int x, int y) {
 
     }
 
