@@ -21,9 +21,20 @@ public class Snake {
         else if (direction.equals(SnakeDirection.DOWN))     move(0, 1);
         else if (direction.equals(SnakeDirection.LEFT))     move(-1, 0);
     }
-
+    
     public void move(int x, int y) {
 
+    }
+
+    public void checkBorders(SnakeSection head) {
+        if (!((head.getX() >= 0 && head.getX() < Room.game.getWidth())
+                && (head.getY() >=0 && head.getY() < Room.game.getHeight())))
+            isAlive = false;
+    }
+
+    public void checkBody(SnakeSection head) {
+        if (sections.contains(head))
+            isAlive = false;
     }
 
     public int getX() {
