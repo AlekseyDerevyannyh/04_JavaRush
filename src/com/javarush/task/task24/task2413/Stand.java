@@ -7,7 +7,7 @@ public class Stand extends BaseObject {
     public Stand(double x, double y) {
         super(x, y, 3);
         this.speed = 1;
-        direction = 0;
+        this.direction = 0;
     }
 
     @Override
@@ -17,7 +17,15 @@ public class Stand extends BaseObject {
 
     @Override
     public void move() {
+        this.x += this.speed * this.direction;
+    }
 
+    public void moveLeft() {
+        this.direction = -1.0;
+    }
+
+    public void moveRight() {
+        this.direction = 1.0;
     }
 
     public double getSpeed() {
