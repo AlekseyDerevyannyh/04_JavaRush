@@ -9,6 +9,7 @@ public class Arkanoid {
     private Stand stand;
     private List<Brick> bricks;
     public static Arkanoid game;
+    private boolean isGameOver;
 
     public Arkanoid(int width, int height) {
         this.width = width;
@@ -22,15 +23,39 @@ public class Arkanoid {
     public void run() {}
 
     public void move() {
-        stand.move();
-        ball.move();
+        this.stand.move();
+        this.ball.move();
     }
 
     public void draw(Canvas canvas) {
-        ball.draw(canvas);
-        stand.draw(canvas);
-        for (Brick brick : bricks) {
+        this.ball.draw(canvas);
+        this.stand.draw(canvas);
+        for (Brick brick : this.bricks) {
             brick.draw(canvas);
+        }
+    }
+
+    public void checkBricksBump() {
+        for (Brick brick : this.bricks) {
+            if (brick.intersects(this.ball)) {
+                double angle = Math.random() * 360;
+                this.ball.setDirection(angle);
+                break;
+            }
+        }
+        bricks.removeIf(b -> b.intersects(this.ball));
+    }
+
+    public void checkStandBump() {
+        if (this.ball.intersects(this.stand)) {
+            double angle = 90 + 20 * (Math.random() - 0.5);
+            this.ball.setDirection(angle);
+        }
+    }
+
+    public void checkEndGame() {
+        if (this.ball.y > this.height) {
+            isGameOver = true;
         }
     }
 
