@@ -49,8 +49,8 @@ public class Solution {
                     return compare;
                 Date date1 = (Date) stock2.get("date");
                 Date date2 = (Date) stock1.get("date");
-                compare = date1.getYear() * 10000 + date1.getMonth() * 100 + date1.getDate() -
-                        date2.getYear() * 10000 + date2.getMonth() * 100 + date2.getDate();
+                compare = (date1.getYear() + 1900) * 10000 + date1.getMonth() * 100 + date1.getDate() -
+                        (date2.getYear() + 1900) * 10000 - date2.getMonth() * 100 - date2.getDate();
                 if (compare != 0)
                     return compare;
                 double change1 = stock1.containsKey("change")
@@ -60,7 +60,7 @@ public class Solution {
                         : 0;
                 double change2 = stock2.containsKey("change")
                         ? ((double) stock2.get("change"))
-                        : stock2.containsKey("open") && stock2.containsKey("last")
+                        : (stock2.containsKey("open") && stock2.containsKey("last"))
                         ? ((double) stock2.get("last") - (double) stock2.get("open"))
                         : 0;
                 return Double.compare(change2, change1);
@@ -118,4 +118,3 @@ public class Solution {
         return calendar.getTime();
     }
 }
-
