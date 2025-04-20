@@ -37,7 +37,6 @@ public class Solution {
             double change = !stock.containsKey("change") ? 0 : ((double) stock.get("change"));
             Date date = (Date) stock.get("date");
             Object[] testArgs = {name, symbol, open, last, change, date, date.getTime()};
-//            Object[] testArgs = {name, symbol, open, last, change, date, date.getTime()};
             System.out.println(pattform.format(testArgs));
         }
     }
@@ -64,7 +63,7 @@ public class Solution {
                         : stock2.containsKey("open") && stock2.containsKey("last")
                         ? ((double) stock2.get("last") - (double) stock2.get("open"))
                         : 0;
-                return Double.compare(change1, change2);
+                return Double.compare(change2, change1);
             }
         });
     }
