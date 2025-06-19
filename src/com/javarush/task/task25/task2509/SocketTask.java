@@ -15,7 +15,8 @@ public abstract class SocketTask<T> implements CancellableTask<T> {
     public synchronized void cancel() {
         //close all resources here
         try {
-            socket.close();
+            if (socket != null)
+                socket.close();
         } catch (IOException ignored) {
         }
     }
@@ -26,12 +27,10 @@ public abstract class SocketTask<T> implements CancellableTask<T> {
                 //close all resources here by using proper SocketTask method
                 //call super-class method in finally block
                 try {
-                    socket.close();
-                } catch (IOException ignored) {
+                    SocketTask.this.cancel();
                 } finally {
-                    super.cancel(true);
+                    return super.cancel(mayInterruptIfRunning);
                 }
-                return false;
             }
         };
     }
