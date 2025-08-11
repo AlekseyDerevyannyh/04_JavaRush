@@ -88,5 +88,25 @@ public class Server {
                 }
             }
         }
+
+        /**
+         * Главный цикл обработки сообщений сервером
+         * @param connection - соединение с участником, от которого принимаем сообщения
+         * @param userName - имя участника, от которого принимаем сообщения
+         * @throws IOException
+         * @throws ClassNotFoundException
+         */
+        private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
+            while (true) {
+                Message message = connection.receive();
+
+                if (message.getType() == MessageType.TEXT) {
+                    String data = message.getData();
+                    sendBroadcastMessage(new Message(MessageType.TEXT, userName + ": " + data));
+                } else {
+                    ConsoleHelper.writeMessage("Получено сообщение от " + socket.getRemoteSocketAddress() + ". Тип сообщения не соответствует протоколу.");
+                }
+            }
+        }
     }
 }
