@@ -11,6 +11,7 @@ import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 
 public class View extends JFrame implements ActionListener {
     private Controller controller;
@@ -116,5 +117,27 @@ public class View extends JFrame implements ActionListener {
 
     public boolean isHtmlTabSelected() {
         return tabbedPane.getSelectedIndex() == 0;
+    }
+
+    public void selectHtmlTab() {
+        tabbedPane.setSelectedIndex(0);
+        resetUndo();
+    }
+
+    public void update() {
+        htmlTextPane.setDocument(controller.getDocument());
+    }
+
+    public void showAbout() {
+        String aboutMessage = "HTML Editor\n"
+                + "Version 1.0\n"
+                + "Author: Aleksey Derevyannyh\n"
+                + "Copyright (c) 2025";
+        JOptionPane.showMessageDialog(
+                this,
+                aboutMessage,
+                "About HTML Editor",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 }
