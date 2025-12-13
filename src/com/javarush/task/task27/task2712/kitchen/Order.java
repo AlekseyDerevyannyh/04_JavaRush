@@ -15,13 +15,27 @@ public class Order {
         dishes = ConsoleHelper.getAllDishesForOrder();
     }
 
+    public int getTotalCookingTime() {
+        int totalCookingTime = 0;
+        for (Dish dish : dishes) {
+            totalCookingTime += dish.getDuration();
+        }
+        return totalCookingTime;
+    }
+
+    public boolean isEmpty() {
+        return dishes == null || dishes.isEmpty();
+    }
+
     @Override
     public String toString() {
+        if (isEmpty())
+            return "";
         StringBuilder dishesString = new StringBuilder();
         for (Dish dish : dishes) {
             dishesString.append(dish.toString()).append(",");
         }
         dishesString.deleteCharAt(dishesString.length() - 1);
-        return String.format("Your order: [%s] of %s", dishesString, tablet);
+        return String.format("Your order: [%s] of %s, cooking time %dmin", dishesString, tablet, getTotalCookingTime());
     }
 }

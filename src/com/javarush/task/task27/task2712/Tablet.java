@@ -18,6 +18,9 @@ public class Tablet extends Observable {
     public Order createOrder() {
         try {
             Order order = new Order(this);
+            if (order.isEmpty()) {
+                return order;
+            }
             ConsoleHelper.writeMessage(order.toString());
             setChanged();
             notifyObservers(order);
@@ -27,8 +30,6 @@ public class Tablet extends Observable {
             return null;
         }
     }
-
-
 
     @Override
     public String toString() {
