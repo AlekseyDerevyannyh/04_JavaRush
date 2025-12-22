@@ -12,30 +12,33 @@ public class Order {
 
     public Order(Tablet tablet) throws IOException {
         this.tablet = tablet;
-        dishes = ConsoleHelper.getAllDishesForOrder();
-    }
-
-    public int getTotalCookingTime() {
-        int totalCookingTime = 0;
-        for (Dish dish : dishes) {
-            totalCookingTime += dish.getDuration();
-        }
-        return totalCookingTime;
-    }
-
-    public boolean isEmpty() {
-        return dishes == null || dishes.isEmpty();
+        this.dishes = ConsoleHelper.getAllDishesForOrder();
+        ConsoleHelper.writeMessage(toString());
     }
 
     @Override
     public String toString() {
-        if (isEmpty())
-            return "";
-        StringBuilder dishesString = new StringBuilder();
-        for (Dish dish : dishes) {
-            dishesString.append(dish.toString()).append(",");
+        StringBuilder result = new StringBuilder();
+        if (dishes.size() == 0) return result.toString();
+        result.append("Your order: [" + dishes.get(0));
+
+        for (int i = 1; i < dishes.size(); i++) {
+            result.append(", " + dishes.get(i).name());
         }
-        dishesString.deleteCharAt(dishesString.length() - 1);
-        return String.format("Your order: [%s] of %s, cooking time %dmin", dishesString, tablet, getTotalCookingTime());
+        result.append("] of " + tablet);
+        result.append(", cooking time " + getTotalCookingTime() + "min");
+        return result.toString();
+    }
+
+    public boolean isEmpty() {
+        return dishes.isEmpty();
+    }
+
+    public int getTotalCookingTime() {
+        int cookingTime = 0;
+        for (Dish dish : dishes) {
+            cookingTime += dish.getDuration();
+        }
+        return cookingTime;
     }
 }

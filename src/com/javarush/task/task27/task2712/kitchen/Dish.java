@@ -7,22 +7,26 @@ public enum Dish {
     JUICE(5),
     WATER(3);
 
-    private final int duration;
+    private int duration;
+
+    public int getDuration() {
+        return duration;
+    }
 
     Dish(int duration) {
         this.duration = duration;
     }
 
     public static String allDishesToString() {
-        StringBuilder result = new StringBuilder();
-        for (Dish dish : values()) {
-            result.append(dish.name()).append(", ");
-        }
-        result.delete(result.length() - 2, result.length());
-        return result.toString();
-    }
+        String result = "";
 
-    public int getDuration() {
-        return duration;
+        for (Dish dish : Dish.values()) {
+            if ("".equals(result)) {
+                result += dish.name();
+            } else {
+                result += ", " + dish.name();
+            }
+        }
+        return result;
     }
 }

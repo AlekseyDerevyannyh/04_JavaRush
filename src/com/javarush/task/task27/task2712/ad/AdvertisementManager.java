@@ -1,13 +1,8 @@
 package com.javarush.task.task27.task2712.ad;
 
-import com.javarush.task.task27.task2712.ConsoleHelper;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AdvertisementManager {
     private final AdvertisementStorage storage = AdvertisementStorage.getInstance();
@@ -17,68 +12,70 @@ public class AdvertisementManager {
         this.timeSeconds = timeSeconds;
     }
 
-    public void processVideos() throws NoVideoAvailableException, IOException {
-        if (storage.list() == null || storage.list().isEmpty()) {
-            throw new NoVideoAvailableException();
-        }
-        List<Advertisement> advertisements = new ArrayList<>();
-        for (Advertisement advertisement : storage.list()) {
-            if (advertisement.getHits() > 0) {
-                advertisements.add(advertisement);
-            }
-        }
-        List<Advertisement> advertisementsForShow = new ArrayList<>();
-        getAdvertisement(advertisements, advertisementsForShow);
-        if (advertisementsForShow.isEmpty()) {
-            throw new NoVideoAvailableException();
-        }
-        Collections.sort(advertisementsForShow);
-        for (Advertisement advertisement : advertisementsForShow) {
-            ConsoleHelper.writeMessage(advertisement.toString());
-            advertisement.revalidate();
-        }
+    public void processVideos() {
+        this.totalTimeSecondsLeft = Integer.MAX_VALUE;
+        obtainOptimalVideoSet(new ArrayList<>(), timeSeconds, 0L);
+
+        displayAdvertisement();
     }
 
-    private void getAdvertisement(List<Advertisement> advertisements, List<Advertisement> advertisementsForShow) {
-        if (advertisements == null || advertisements.isEmpty()) {
+    //recursion
+    private long maxAmount;
+    private List<Advertisement> optimalVideoSet;
+    private int totalTimeSecondsLeft;
+
+    private void obtainOptimalVideoSet(List<Advertisement> totalList, int currentTimeSecondsLeft, long currentAmount) {
+        if (currentTimeSecondsLeft < 0) {
             return;
-        }
-        if (checkDuration(advertisements)) {
-            if (advertisementsForShow.isEmpty()) {
-                advertisementsForShow.addAll(advertisements);
+        } else if (currentAmount > maxAmount
+                || currentAmount == maxAmount && (totalTimeSecondsLeft > currentTimeSecondsLeft
+                || totalTimeSecondsLeft == currentTimeSecondsLeft && totalList.size() < optimalVideoSet.size())) {
+            this.totalTimeSecondsLeft = currentTimeSecondsLeft;
+            this.optimalVideoSet = totalList;
+            this.maxAmount = currentAmount;
+            if (currentTimeSecondsLeft == 0) {
                 return;
             }
-            Comparator<List<Advertisement>> advertisementsComparator = new Comparator<List<Advertisement>>() {
-                @Override
-                public int compare(List<Advertisement> o1, List<Advertisement> o2) {
-                    long sumAmount1 = o1.stream().mapToLong(Advertisement::getAmountPerOneDisplaying).sum();
-                    long sumAmount2 = o2.stream().mapToLong(Advertisement::getAmountPerOneDisplaying).sum();
-                    if (sumAmount1 == sumAmount2) {
-                        int sumDuration1 = o1.stream().mapToInt(Advertisement::getDuration).sum();
-                        int sumDuration2 = o2.stream().mapToInt(Advertisement::getDuration).sum();
-                        if (sumDuration1 == sumDuration2) {
-                            return o2.size() - o1.size();
-                        }
-                        return Integer.compare(sumDuration1, sumDuration2);
-                    }
-                    return Long.compare(sumAmount1, sumAmount2);
-                }
-            };
-            if (advertisementsComparator.compare(advertisements, advertisementsForShow) > 0) {
-                advertisementsForShow.clear();
-                advertisementsForShow.addAll(advertisements);
-            }
-            return;
         }
-        for (Advertisement advertisement : advertisements) {
-            List<Advertisement> advertisementRec = new ArrayList<>(advertisements);
-            advertisementRec.remove(advertisement);
-            getAdvertisement(advertisementRec, advertisementsForShow);
+
+        ArrayList<Advertisement> tmp = getActualAdvertisements();
+        tmp.removeAll(totalList);
+        for (Advertisement ad : tmp) {
+            if (!ad.isActive()) continue;
+            ArrayList<Advertisement> currentList = new ArrayList<>(totalList);
+            currentList.add(ad);
+            obtainOptimalVideoSet(currentList, currentTimeSecondsLeft - ad.getDuration(), currentAmount + ad.getAmountPerOneDisplaying());
         }
     }
 
-    private boolean checkDuration(List<Advertisement> advertisements) {
-        int sumDuration = advertisements.stream().mapToInt(Advertisement::getDuration).sum();
-        return sumDuration <= timeSeconds;
+    private ArrayList<Advertisement> getActualAdvertisements() {
+        ArrayList<Advertisement> advertisements = new ArrayList<>();
+        for (Advertisement ad : storage.list()) {
+            if (ad.isActive()) {
+                advertisements.add(ad);
+            }
+        }
+        return advertisements;
+    }
+
+    private void displayAdvertisement() {
+        if (optimalVideoSet == null || optimalVideoSet.isEmpty()) {
+            throw new NoVideoAvailableException();
+        }
+
+        optimalVideoSet.sort((o1, o2) -> {
+            long l = o2.getAmountPerOneDisplaying() - o1.getAmountPerOneDisplaying();
+            return (int) (l != 0 ? l : o2.getDuration() - o1.getDuration());
+        });
+
+        for (Advertisement ad : optimalVideoSet) {
+            displayInPlayer(ad);
+            ad.revalidate();
+        }
+    }
+
+    private void displayInPlayer(Advertisement advertisement) {
+        System.out.println(advertisement.getName() + " is displaying... " + advertisement.getAmountPerOneDisplaying() +
+                ", " + (1000 * advertisement.getAmountPerOneDisplaying() / advertisement.getDuration()));
     }
 }

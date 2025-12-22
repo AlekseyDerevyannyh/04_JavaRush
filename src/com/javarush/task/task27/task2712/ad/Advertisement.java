@@ -1,11 +1,20 @@
 package com.javarush.task.task27.task2712.ad;
 
-public class Advertisement implements Comparable<Advertisement> {
+public class Advertisement {
+    //видео
     private Object content;
+
     private String name;
+
+    //начальная сумма, стоимость рекламы в копейках. Используем long, чтобы избежать проблем с округлением
     private long initialAmount;
+
+    //количество оплаченных показов
     private int hits;
+
+    //продолжительность в секундах
     private int duration;
+
     private long amountPerOneDisplaying;
 
     public Advertisement(Object content, String name, long initialAmount, int hits, int duration) {
@@ -14,7 +23,10 @@ public class Advertisement implements Comparable<Advertisement> {
         this.initialAmount = initialAmount;
         this.hits = hits;
         this.duration = duration;
-        this.amountPerOneDisplaying = hits > 0 ? initialAmount / hits : 0;
+
+        if (hits > 0) {
+            amountPerOneDisplaying = initialAmount / hits;
+        }
     }
 
     public String getName() {
@@ -29,30 +41,14 @@ public class Advertisement implements Comparable<Advertisement> {
         return amountPerOneDisplaying;
     }
 
-    public int getHits() {
-        return hits;
-    }
-
     public void revalidate() {
-        if (hits <= 0) {
+        if (hits == 0) {
             throw new UnsupportedOperationException();
-        } else {
-            hits --;
         }
+        hits--;
     }
 
-    @Override
-    public int compareTo(Advertisement o) {
-        if (this.amountPerOneDisplaying == o.amountPerOneDisplaying ) {
-            long amountPerDurationThis = this.amountPerOneDisplaying * 1000 / this.duration;
-            long amountPerDurationO = o.amountPerOneDisplaying * 1000 / o.duration;
-            return Long.compare(amountPerDurationThis, amountPerDurationO);
-        }
-        return Long.compare(o.amountPerOneDisplaying, this.amountPerOneDisplaying);
-    }
-
-    @Override
-    public String toString() {
-        return name + " is displaying... " + amountPerOneDisplaying + ", " + amountPerOneDisplaying * 1000 / duration;
+    public boolean isActive() {
+        return hits > 0;
     }
 }
