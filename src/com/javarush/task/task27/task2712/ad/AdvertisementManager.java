@@ -1,5 +1,8 @@
 package com.javarush.task.task27.task2712.ad;
 
+import com.javarush.task.task27.task2712.statistic.StatisticManager;
+import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataRow;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +18,10 @@ public class AdvertisementManager {
     public void processVideos() {
         this.totalTimeSecondsLeft = Integer.MAX_VALUE;
         obtainOptimalVideoSet(new ArrayList<>(), timeSeconds, 0L);
-
+        StatisticManager statisticManager = StatisticManager.getInstance();
+        long amount = optimalVideoSet.stream().mapToLong(Advertisement::getAmountPerOneDisplaying).sum();
+        int totalDuration = optimalVideoSet.stream().mapToInt(Advertisement::getDuration).sum();
+        statisticManager.register(new VideoSelectedEventDataRow(optimalVideoSet, amount, totalDuration));
         displayAdvertisement();
     }
 
