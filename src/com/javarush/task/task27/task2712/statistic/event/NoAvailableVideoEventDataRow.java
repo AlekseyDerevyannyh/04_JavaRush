@@ -3,7 +3,7 @@ package com.javarush.task.task27.task2712.statistic.event;
 import java.util.Date;
 
 public class NoAvailableVideoEventDataRow implements EventDataRow {
-    private int totalDuration;  // время приготовления заказа в секундах
+    private int totalDuration;
     private Date currentDate;
 
     public NoAvailableVideoEventDataRow(int totalDuration) {

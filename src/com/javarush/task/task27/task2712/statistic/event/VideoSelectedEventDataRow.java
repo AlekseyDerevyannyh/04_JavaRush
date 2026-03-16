@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 public class VideoSelectedEventDataRow implements EventDataRow {
-    private List<Advertisement> optimalVideoSet;    // список видео-роликов, отобранных для показа
-    private long amount;            // сумма денег в копейках
-    private int totalDuration;      // общая продолжительность показа отобранных рекламных роликов
+    private long amount;
+    private List<Advertisement> optimalVideoSet;
+    private int totalDuration;
     private Date currentDate;
 
     public VideoSelectedEventDataRow(List<Advertisement> optimalVideoSet, long amount, int totalDuration) {
-        this.optimalVideoSet = optimalVideoSet;
         this.amount = amount;
+        this.optimalVideoSet = optimalVideoSet;
         this.totalDuration = totalDuration;
         this.currentDate = new Date();
     }
@@ -31,5 +31,9 @@ public class VideoSelectedEventDataRow implements EventDataRow {
     @Override
     public int getTime() {
         return totalDuration;
+    }
+
+    public long getAmount() {
+        return amount;
     }
 }

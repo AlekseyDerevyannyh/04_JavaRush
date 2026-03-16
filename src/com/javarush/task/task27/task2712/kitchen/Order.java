@@ -8,6 +8,16 @@ import java.util.List;
 
 public class Order {
     private final Tablet tablet;
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public Tablet getTablet() {
+
+        return tablet;
+    }
+
     protected List<Dish> dishes;
 
     public Order(Tablet tablet) throws IOException {
@@ -40,13 +50,5 @@ public class Order {
             cookingTime += dish.getDuration();
         }
         return cookingTime;
-    }
-
-    public List<Dish> getDishes() {
-        return dishes;
-    }
-
-    public Tablet getTablet() {
-        return tablet;
     }
 }

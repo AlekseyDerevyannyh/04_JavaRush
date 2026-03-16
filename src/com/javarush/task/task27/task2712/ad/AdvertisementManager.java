@@ -5,6 +5,7 @@ import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataR
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class AdvertisementManager {
@@ -17,15 +18,15 @@ public class AdvertisementManager {
 
     public void processVideos() {
         this.totalTimeSecondsLeft = Integer.MAX_VALUE;
-        obtainOptimalVideoSet(new ArrayList<>(), timeSeconds, 0L);
-        StatisticManager statisticManager = StatisticManager.getInstance();
-        long amount = optimalVideoSet.stream().mapToLong(Advertisement::getAmountPerOneDisplaying).sum();
-        int totalDuration = optimalVideoSet.stream().mapToInt(Advertisement::getDuration).sum();
-        statisticManager.register(new VideoSelectedEventDataRow(optimalVideoSet, amount, totalDuration));
+        obtainOptimalVideoSet(new ArrayList<Advertisement>(), timeSeconds, 0l);
+
+        VideoSelectedEventDataRow row = new VideoSelectedEventDataRow(optimalVideoSet, maxAmount, timeSeconds - totalTimeSecondsLeft);
+        StatisticManager.getInstance().register(row);
+
         displayAdvertisement();
     }
 
-    //recursion
+    //recursy
     private long maxAmount;
     private List<Advertisement> optimalVideoSet;
     private int totalTimeSecondsLeft;
@@ -65,13 +66,17 @@ public class AdvertisementManager {
     }
 
     private void displayAdvertisement() {
+        //TODO displaying
         if (optimalVideoSet == null || optimalVideoSet.isEmpty()) {
             throw new NoVideoAvailableException();
         }
 
-        optimalVideoSet.sort((o1, o2) -> {
-            long l = o2.getAmountPerOneDisplaying() - o1.getAmountPerOneDisplaying();
-            return (int) (l != 0 ? l : o2.getDuration() - o1.getDuration());
+        Collections.sort(optimalVideoSet, new Comparator<Advertisement>() {
+            @Override
+            public int compare(Advertisement o1, Advertisement o2) {
+                long l = o2.getAmountPerOneDisplaying() - o1.getAmountPerOneDisplaying();
+                return (int) (l != 0 ? l : o2.getDuration() - o1.getDuration());
+            }
         });
 
         for (Advertisement ad : optimalVideoSet) {
@@ -81,6 +86,7 @@ public class AdvertisementManager {
     }
 
     private void displayInPlayer(Advertisement advertisement) {
+        //TODO get Player instance and display content
         System.out.println(advertisement.getName() + " is displaying... " + advertisement.getAmountPerOneDisplaying() +
                 ", " + (1000 * advertisement.getAmountPerOneDisplaying() / advertisement.getDuration()));
     }

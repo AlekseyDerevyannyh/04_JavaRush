@@ -15,12 +15,13 @@ public class Cook extends Observable implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object order) {
+    public void update(Observable o, Object arg) {
+        Order order = (Order) arg;
         ConsoleHelper.writeMessage("Start cooking - " + order);
-        StatisticManager statisticManager = StatisticManager.getInstance();
-        statisticManager.register(new CookedOrderEventDataRow(((Order)order).getTablet().toString(), name, ((Order)order).getTotalCookingTime(), ((Order)order).getDishes()));
         setChanged();
         notifyObservers(order);
+        CookedOrderEventDataRow row = new CookedOrderEventDataRow(order.getTablet().toString(), name, order.getTotalCookingTime() * 60, order.getDishes());
+        StatisticManager.getInstance().register(row);
     }
 
     @Override
