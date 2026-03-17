@@ -1,11 +1,9 @@
 package com.javarush.task.task27.task2712;
 
+import com.javarush.task.task27.task2712.ad.StatisticAdvertisementManager;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class DirectorTablet {
 
@@ -17,7 +15,7 @@ public class DirectorTablet {
 
         for (String key : list) {
             double amount = 1.0 * profitMap.get(key) / 100;
-            System.out.println(key + " - " + String.format(Locale.ENGLISH, "%.2f", amount));
+            ConsoleHelper.writeMessage(key + " - " + String.format(Locale.ENGLISH, "%.2f", amount));
         }
     }
 
@@ -29,24 +27,32 @@ public class DirectorTablet {
 
         for (String key : list) {
             Map<String, Integer> cookMap = cookWorkloadingMap.get(key);
-            System.out.println(key);
+            ConsoleHelper.writeMessage(key);
 
             ArrayList<String> cookNames = new ArrayList(cookMap.keySet());
             Collections.sort(cookNames);
             for (String cookName : cookNames) {
-                System.out.println(cookName + " - " + ((cookMap.get(cookName) + 59) / 60) + " min");
+                ConsoleHelper.writeMessage(cookName + " - " + ((cookMap.get(cookName) + 59) / 60) + " min");
             }
-
-            System.out.println();
+            ConsoleHelper.writeMessage("");
         }
     }
 
 
     public void printActiveVideoSet() {
+        StatisticAdvertisementManager statisticAdvertisementManager = StatisticAdvertisementManager.getInstance();
+        Map<String, Integer> activeVideos = statisticAdvertisementManager.getActiveVideoSet();
+        for (String name : activeVideos.keySet()) {
+            ConsoleHelper.writeMessage(String.format("%s - %d", name, activeVideos.get(name)));
+        }
 
     }
 
     public void printArchivedVideoSet() {
-
+        StatisticAdvertisementManager statisticAdvertisementManager = StatisticAdvertisementManager.getInstance();
+        Set<String> archivedVideos = statisticAdvertisementManager.getArchivedVideoSet();
+        for (String name : archivedVideos) {
+            ConsoleHelper.writeMessage(name);
+        }
     }
 }
