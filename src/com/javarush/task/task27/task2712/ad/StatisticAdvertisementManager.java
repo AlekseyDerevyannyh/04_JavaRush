@@ -1,37 +1,25 @@
 package com.javarush.task.task27.task2712.ad;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatisticAdvertisementManager {
-
-    private StatisticAdvertisementManager () {}
-
-    private static class InstanceHolder {
-        private static final StatisticAdvertisementManager ourInstance = new StatisticAdvertisementManager();
-    }
-
-    public static StatisticAdvertisementManager getInstance() {
-        return InstanceHolder.ourInstance;
-    }
-
+    private static StatisticAdvertisementManager ourInstance = new StatisticAdvertisementManager();
     private AdvertisementStorage storage = AdvertisementStorage.getInstance();
 
-    public Map<String, Integer> getActiveVideoSet() {
-        Map<String, Integer> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        List<Advertisement> videos = storage.list();
-        for (Advertisement video : videos) {
-            if (video.isActive())
-                result.put(video.getName(), video.getHits());
-        }
-        return result;
+    public static StatisticAdvertisementManager getInstance() {
+        return ourInstance;
     }
 
-    public Set<String> getArchivedVideoSet() {
-        Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        List<Advertisement> videos = storage.list();
-        for (Advertisement video : videos) {
-            if (!video.isActive())
-                result.add(video.getName());
+    private StatisticAdvertisementManager() {
+    }
+
+    public List<Advertisement> getVideoSet(boolean isActive) {
+        List<Advertisement> result = new ArrayList<>();
+        for (Advertisement advertisement : storage.list()) {
+            if (!isActive ^ advertisement.isActive()) {
+                result.add(advertisement);
+            }
         }
         return result;
     }

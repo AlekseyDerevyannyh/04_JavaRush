@@ -1,5 +1,6 @@
 package com.javarush.task.task27.task2712;
 
+import com.javarush.task.task27.task2712.ad.Advertisement;
 import com.javarush.task.task27.task2712.ad.StatisticAdvertisementManager;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 
@@ -14,8 +15,8 @@ public class DirectorTablet {
         Collections.sort(list);
 
         for (String key : list) {
-            double amount = 1.0 * profitMap.get(key) / 100;
-            ConsoleHelper.writeMessage(key + " - " + String.format(Locale.ENGLISH, "%.2f", amount));
+            long aLong = profitMap.get(key);
+            System.out.println(key + " - " + (aLong / 100) + "." + (aLong % 100));
         }
     }
 
@@ -27,32 +28,43 @@ public class DirectorTablet {
 
         for (String key : list) {
             Map<String, Integer> cookMap = cookWorkloadingMap.get(key);
-            ConsoleHelper.writeMessage(key);
+            System.out.println(key);
 
             ArrayList<String> cookNames = new ArrayList(cookMap.keySet());
             Collections.sort(cookNames);
             for (String cookName : cookNames) {
-                ConsoleHelper.writeMessage(cookName + " - " + ((cookMap.get(cookName) + 59) / 60) + " min");
+                System.out.println(cookName + " - " + ((cookMap.get(cookName) + 59) / 60) + " min");
             }
-            ConsoleHelper.writeMessage("");
+
+            System.out.println();
         }
     }
 
-
     public void printActiveVideoSet() {
-        StatisticAdvertisementManager statisticAdvertisementManager = StatisticAdvertisementManager.getInstance();
-        Map<String, Integer> activeVideos = statisticAdvertisementManager.getActiveVideoSet();
-        for (String name : activeVideos.keySet()) {
-            ConsoleHelper.writeMessage(String.format("%s - %d", name, activeVideos.get(name)));
-        }
+        List<Advertisement> videoSet = StatisticAdvertisementManager.getInstance().getVideoSet(true);
+        Collections.sort(videoSet, new Comparator<Advertisement>() {
+            @Override
+            public int compare(Advertisement o1, Advertisement o2) {
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+            }
+        });
 
+        for (Advertisement advertisement : videoSet) {
+            System.out.println(advertisement.getName() + " - " + advertisement.getHits());
+        }
     }
 
     public void printArchivedVideoSet() {
-        StatisticAdvertisementManager statisticAdvertisementManager = StatisticAdvertisementManager.getInstance();
-        Set<String> archivedVideos = statisticAdvertisementManager.getArchivedVideoSet();
-        for (String name : archivedVideos) {
-            ConsoleHelper.writeMessage(name);
+        List<Advertisement> videoSet = StatisticAdvertisementManager.getInstance().getVideoSet(false);
+        Collections.sort(videoSet, new Comparator<Advertisement>() {
+            @Override
+            public int compare(Advertisement o1, Advertisement o2) {
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+            }
+        });
+
+        for (Advertisement advertisement : videoSet) {
+            System.out.println(advertisement.getName());
         }
     }
 }
