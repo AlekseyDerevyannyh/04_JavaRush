@@ -47,6 +47,10 @@ public class StatisticManager {
         }
     }
 
+    public Set<Cook> getCooks() {
+        return cooks;
+    }
+
     public void register(EventDataRow data) {
         this.statisticStorage.put(data);
     }
