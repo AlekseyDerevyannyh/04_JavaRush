@@ -90,14 +90,14 @@ public class Model {
         return isChanged;
     }
 
-    void left() {
-        boolean isChanged = false;
-        for (Tile[] tiles : gameTiles) {
-            boolean isCompressed = compressTiles(tiles);
-            boolean isMerged = mergeTiles(tiles);
-            isChanged |= isCompressed | isMerged;
+    public void left() {
+        boolean moveFlag = false;
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            if (compressTiles(gameTiles[i]) | mergeTiles(gameTiles[i])) {
+                moveFlag = true;
+            }
         }
-        if (isChanged) {
+        if (moveFlag) {
             addTile();
         }
     }
