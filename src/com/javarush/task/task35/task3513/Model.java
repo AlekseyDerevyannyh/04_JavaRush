@@ -45,21 +45,25 @@ public class Model {
         return list;
     }
 
-    private void compressTiles(Tile[] tiles) {
+    private boolean compressTiles(Tile[] tiles) {
         int insertPosition = 0;
+        boolean isChanged = false;
         for (int i = 0; i < FIELD_WIDTH; i++) {
             if (!tiles[i].isEmpty()) {
                 if (i != insertPosition) {
                     tiles[insertPosition] = tiles[i];
                     tiles[i] = new Tile();
+                    isChanged = true;
                 }
                 insertPosition++;
             }
         }
+        return isChanged;
     }
 
-    private void mergeTiles(Tile[] tiles) {
+    private boolean mergeTiles(Tile[] tiles) {
         LinkedList<Tile> tilesList = new LinkedList<>();
+        boolean isChanged = false;
         for (int i = 0; i < FIELD_WIDTH; i++) {
             if (tiles[i].isEmpty()) {
                 continue;
@@ -73,6 +77,7 @@ public class Model {
                 score += updatedValue;
                 tilesList.addLast(new Tile(updatedValue));
                 tiles[i + 1].value = 0;
+                isChanged = true;
             } else {
                 tilesList.addLast(new Tile(tiles[i].value));
             }
@@ -81,6 +86,19 @@ public class Model {
 
         for (int i = 0; i < tilesList.size(); i++) {
             tiles[i] = tilesList.get(i);
+        }
+        return isChanged;
+    }
+
+    void left() {
+        boolean isChanged = false;
+        for (Tile[] tiles : gameTiles) {
+            boolean isCompressed = compressTiles(tiles);
+            boolean isMerged = mergeTiles(tiles);
+            isChanged |= isCompressed | isMerged;
+        }
+        if (isChanged) {
+            addTile();
         }
     }
 }
