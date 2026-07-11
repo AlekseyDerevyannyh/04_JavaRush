@@ -7,7 +7,7 @@ import java.util.List;
 public class Model {
     private Tile[][] gameTiles;
     private static final int FIELD_WIDTH = 4;
-    int maxTile = 0;
+    int maxTile = 2;
     int score = 0;
 
     public Model() {
@@ -47,23 +47,23 @@ public class Model {
 
     private boolean compressTiles(Tile[] tiles) {
         int insertPosition = 0;
-        boolean isChanged = false;
+        boolean result = false;
         for (int i = 0; i < FIELD_WIDTH; i++) {
             if (!tiles[i].isEmpty()) {
                 if (i != insertPosition) {
                     tiles[insertPosition] = tiles[i];
                     tiles[i] = new Tile();
-                    isChanged = true;
+                    result = true;
                 }
                 insertPosition++;
             }
         }
-        return isChanged;
+        return result;
     }
 
     private boolean mergeTiles(Tile[] tiles) {
+        boolean result = false;
         LinkedList<Tile> tilesList = new LinkedList<>();
-        boolean isChanged = false;
         for (int i = 0; i < FIELD_WIDTH; i++) {
             if (tiles[i].isEmpty()) {
                 continue;
@@ -77,7 +77,7 @@ public class Model {
                 score += updatedValue;
                 tilesList.addLast(new Tile(updatedValue));
                 tiles[i + 1].value = 0;
-                isChanged = true;
+                result = true;
             } else {
                 tilesList.addLast(new Tile(tiles[i].value));
             }
@@ -87,7 +87,19 @@ public class Model {
         for (int i = 0; i < tilesList.size(); i++) {
             tiles[i] = tilesList.get(i);
         }
-        return isChanged;
+
+        return result;
+    }
+
+    private Tile[][] rotateClockwise(Tile[][] tiles) {
+        final int N = tiles.length;
+        Tile[][] result = new Tile[N][N];
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < N; c++) {
+                result[c][N - 1 - r] = tiles[r][c];
+            }
+        }
+        return result;
     }
 
     public void left() {
@@ -102,37 +114,28 @@ public class Model {
         }
     }
 
-    void right() {
-        rotateTiles();
-        rotateTiles();
+    public void right() {
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
         left();
-        rotateTiles();
-        rotateTiles();
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
     }
 
-    void up() {
-        rotateTiles();
-        rotateTiles();
-        rotateTiles();
+    public void up() {
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
         left();
-        rotateTiles();
+        gameTiles = rotateClockwise(gameTiles);
     }
 
-    void down() {
-        rotateTiles();
+    public void down() {
+        gameTiles = rotateClockwise(gameTiles);
         left();
-        rotateTiles();
-        rotateTiles();
-        rotateTiles();
-    }
-
-    private void rotateTiles() {
-        Tile[][] tmp = new Tile[FIELD_WIDTH][FIELD_WIDTH];
-        for (int i = 0; i < FIELD_WIDTH; i++) {
-            for (int j = 0; j < FIELD_WIDTH; j++) {
-                tmp[i][j] = gameTiles[FIELD_WIDTH - 1 - j][i];
-            }
-        }
-        gameTiles = tmp;
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
     }
 }
+
