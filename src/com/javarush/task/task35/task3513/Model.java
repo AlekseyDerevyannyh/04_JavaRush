@@ -101,4 +101,38 @@ public class Model {
             addTile();
         }
     }
+
+    void right() {
+        rotateTiles();
+        rotateTiles();
+        left();
+        rotateTiles();
+        rotateTiles();
+    }
+
+    void up() {
+        rotateTiles();
+        rotateTiles();
+        rotateTiles();
+        left();
+        rotateTiles();
+    }
+
+    void down() {
+        rotateTiles();
+        left();
+        rotateTiles();
+        rotateTiles();
+        rotateTiles();
+    }
+
+    private void rotateTiles() {
+        Tile[][] tmp = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                tmp[i][j] = gameTiles[FIELD_WIDTH - 1 - j][i];
+            }
+        }
+        gameTiles = tmp;
+    }
 }
