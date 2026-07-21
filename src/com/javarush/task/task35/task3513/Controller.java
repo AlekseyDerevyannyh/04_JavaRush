@@ -30,6 +30,9 @@ public class Controller extends KeyAdapter {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             resetGame();
         }
+        if (e.getKeyCode() == KeyEvent.VK_Z) {
+            model.rollback();
+        }
         if (!model.canMove()) {
             view.isGameLost = true;
         }
