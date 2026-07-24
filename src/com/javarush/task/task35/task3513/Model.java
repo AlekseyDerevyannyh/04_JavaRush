@@ -1,9 +1,6 @@
 package com.javarush.task.task35.task3513;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Model {
     private Tile[][] gameTiles;
@@ -232,14 +229,24 @@ public class Model {
     }
 
     public MoveEfficiency getMoveEfficiency(Move move) {
+        MoveEfficiency moveEfficiency = new MoveEfficiency(-1, 0, move);
         move.move();
-        MoveEfficiency result;
         if (hasBoardChanged()) {
-            result = new MoveEfficiency(getEmptyTiles().size(), score, move);
-        } else {
-            result = new MoveEfficiency(-1, 0, move);
+            moveEfficiency = new MoveEfficiency(getEmptyTilesCount(), score, move);
         }
         rollback();
-        return result;
+        return moveEfficiency;
+    }
+
+    public void autoMove() {
+        PriorityQueue<MoveEfficiency> priorityQueue = new PriorityQueue<>(4, Collections.reverseOrder());
+        priorityQueue.offer(getMoveEfficiency(this::left));
+        priorityQueue.offer(getMoveEfficiency(this::right));
+        priorityQueue.offer(getMoveEfficiency(this::up));
+        priorityQueue.offer(getMoveEfficiency(this::down));
+        MoveEfficiency moveEfficiency = priorityQueue.peek();
+        if (moveEfficiency != null) {
+            moveEfficiency.getMove().move();
+        }
     }
 }

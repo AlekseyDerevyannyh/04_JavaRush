@@ -1,6 +1,6 @@
 package com.javarush.task.task35.task3513;
 
-public class MoveEfficiency implements Move, Comparable<MoveEfficiency> {
+public class MoveEfficiency implements Comparable<MoveEfficiency> {
     private int numberOfEmptyTiles;
     private int score;
     private Move move;
@@ -13,11 +13,6 @@ public class MoveEfficiency implements Move, Comparable<MoveEfficiency> {
 
     public Move getMove() {
         return move;
-    }
-
-    @Override
-    public void move() {
-
     }
 
     @Override
