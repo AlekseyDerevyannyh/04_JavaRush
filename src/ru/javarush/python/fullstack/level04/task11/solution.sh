@@ -1,0 +1,4 @@
+# Запуск всех сервисов в параллельном режиме и вывод логов в консоль
+docker-compose up -d
+docker-compose logs -f
+
