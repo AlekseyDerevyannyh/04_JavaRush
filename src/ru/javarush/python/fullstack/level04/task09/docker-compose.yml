@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:latest
+    volumes:
+      - ./src:/usr/src/app
+    working_dir: /usr/src/app
+    command: npm start
