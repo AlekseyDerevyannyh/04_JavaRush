@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    deploy:
+      replicas: 3
+    ports:
+      - "80:80"
+      - "81:80"
+      - "82:80"
+    networks:
+      - webnet
+
+networks:
+  webnet:
