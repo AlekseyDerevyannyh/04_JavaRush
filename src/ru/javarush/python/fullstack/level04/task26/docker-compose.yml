@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - webnet
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: exampleuser
+      POSTGRES_PASSWORD: examplepass
+      POSTGRES_DB: exampledb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - webnet
+
+networks:
+  webnet:
+
+volumes:
+  db-data:
