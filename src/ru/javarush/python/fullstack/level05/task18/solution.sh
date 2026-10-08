@@ -1,0 +1,20 @@
+cat > docker-compose.yml <<'EOF'
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    networks:
+      - my_bridge_network
+
+  app:
+    image: myapp:latest
+    networks:
+      - my_bridge_network
+
+networks:
+  my_bridge_network:
+    driver: bridge
+EOF
+
+docker compose up -d
