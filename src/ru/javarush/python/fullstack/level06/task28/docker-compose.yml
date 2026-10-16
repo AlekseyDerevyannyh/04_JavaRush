@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  app:
+    image: my_app_image
+    volumes:
+      - app_data:/var/lib/myapp/data
+      - app_config:/etc/myapp/config
+
+volumes:
+  app_data:
+  app_config:
