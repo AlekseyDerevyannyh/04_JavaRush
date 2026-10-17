@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: node:14
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+    volumes:
+      - frontend_data:/usr/share/nginx/html
+
+  backend:
+    image: python:3.12
+    ports:
+      - "5000:5000"
+    networks:
+      - mynetwork
+    volumes:
+      - backend_data:/usr/src/app
+
+  database:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  frontend_data:
+  backend_data:
+  db_data:
