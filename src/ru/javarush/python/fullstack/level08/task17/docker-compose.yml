@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: frontend-image
+    networks:
+      - app-network
+
+  backend:
+    image: backend-image
+    networks:
+      - app-network
+
+  database:
+    image: database-image
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
