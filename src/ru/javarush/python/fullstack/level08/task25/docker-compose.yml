@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: frontend-image
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+
+  backend:
+    image: backend-image
+    ports:
+      - "5000:5000"
+    networks:
+      - monitoring
+
+  prometheus:
+    build: ./prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
